@@ -1,0 +1,68 @@
+MySQL Task 1
+Create a table empl to store employee details as shown below and write statement for following queries based on table.
+
+-- 1. Database Creation
+create database employeeDB;
+
+-- Use Created db
+use employeeDB;
+
+-- Create Table
+create table Empl (
+	empno int not null unique,
+    empname varchar(255),
+    job varchar(255),
+    mgr int,
+    hiredate date,
+    sal long,
+    comm long,
+    deptno int
+);
+
+-- Insert Data in table
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8369, 'SMITH', 'CLERK', 8902, '1990-12-18', 800.00, Null, 20);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8499, 'ANYA', 'SALESMAN', 8698, '1991-02-20', 1600.00, 300.00, 30);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8521, 'SETH', 'SALESMAN', 8698, '1991-02-22', 1250.00, 500.00, 30);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8566, 'MAHADEVAN', 'MANAGER', 8839, '1991-04-02', 2985.00, Null, 20);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8654, 'MOMIN', 'SALESMAN', 8698, '1991-09-28', 1250.00, 1400.00, 30);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8698, 'BINA', 'MANAGER', 8839, '1991-05-01', 2850.00, Null, 30);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8882, 'SHIVANESH', 'MANAGER', 8839, '1991-06-09', 2450.00, Null, 10);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8888, 'SCOTT', 'ANALYST', 8566, '1992-12-09', 3000.00, Null, 20);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8839, 'AMIR', 'PRESIDENT', NULL, '1991-11-16', 5000.00, Null, 10);
+insert into Empl (empno, empname, job, mgr, hiredate, sal, comm, deptno ) values (8844, 'KULDEEP', 'SALESMAN', 8698, '1991-09-08', 1500.00, 0.00, 30);
+
+-- Retrieve all data
+select * from Empl;
+output screenshot : retrieve_all_data.png
+
+
+-- Consider the Employee Table and write SQL command to get the following :
+
+-- A -  Write a query to display ename and sal of employee whose salary are greater than or equal to 2200;
+select empname, sal from empl where sal >= 2200;
+output screenshot : task1.A.png
+
+
+-- B - Write a query to display details of employees who are not getting commission?
+select * from empl where comm is null;
+output screenshot : task1.B.png
+
+-- C - Write a query to display empolee name and salary of those employees who dont have their salary in range of 2500 to 4000?
+select empname, sal from empl where sal not between 2500 and 4000;
+output screenshot : task1.C.png
+
+-- D - Write a query to display the name, job title and salary of employees who dont have a manager?
+select empname, job, sal from empl where mgr is null;
+output screenshot : task1.D.png
+
+-- E - Write a query to display the name of an employee whose name contains "A" as third Alphabet?
+select empname from empl where empname like '__A%';
+output screenshot : task1.E(Testcase1).png
+output screenshot : task1.E.(Testcase2).png
+
+-- F - Write a query to display the name of an employee whose name contains "T" as the last alphabet?
+select empname from empl where empname like '__%T';
+output screenshot : task1.F.png
+
+
+--- Output Screenshots added in same folder
