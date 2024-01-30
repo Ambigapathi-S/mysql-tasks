@@ -1,4 +1,4 @@
-MySQL Task 1
+MySQL Task 1 --- Output Screenshots added in same folder
 Create a table empl to store employee details as shown below and write statement for following queries based on table.
 
 -- 1. Database Creation
@@ -65,4 +65,3 @@ select empname from empl where empname like '__%T';
 output screenshot : task1.F.png
 
 
---- Output Screenshots added in same folder
