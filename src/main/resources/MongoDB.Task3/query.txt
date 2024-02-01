@@ -1,0 +1,152 @@
+use zenClassProgramme // Use Database
+
+// Collections Creation
+var collectionList = ["users", "codekata", "attendance", "topics", "tasks", "company_drives", "mentors"];
+	collectionList.forEach(function(collectionName) {db.createCollection(collectionName)});
+
+// Data insertion for all collections
+    db.users.insertMany([{"username" : "Ambiga"}, {"username" : "Raji"}, {"username" : "Ani"}, {"username" : "Aadhvik"}]);
+    {
+      acknowledged: true,
+      insertedIds: {
+        '0': ObjectId('65bb9bb0e027a40c9aa9e7fb'),
+        '1': ObjectId('65bb9bb0e027a40c9aa9e7fc'),
+        '2': ObjectId('65bb9bb0e027a40c9aa9e7fd'),
+        '3': ObjectId('65bb9bb0e027a40c9aa9e7fe')
+      }
+    }
+    db.codekata.insertMany([{"username" : "Ambiga", "noOfPblmsSolved" : 10, "totalPblms" : 100, "user_id" : ObjectId('65bb9bb0e027a40c9aa9e7fb')},{"username" : "Raji", "noOfPblmsSolved" : 20, "totalPblms" : 100, "user_id" : ObjectId('65bb9bb0e027a40c9aa9e7fc')}]);
+    {
+      acknowledged: true,
+      insertedIds: {
+        '0': ObjectId('65bb9c92e027a40c9aa9e7ff'),
+        '1': ObjectId('65bb9caee027a40c9aa9e800')
+      }
+    }
+    db.attendance.insertMany([{"student_id" : ObjectId('65bb9c92e027a40c9aa9e7ff'), "student_name" : "Ambiga", "date" : "2020-10-15", status: "present", "eligibleForPlacement" : "yes"},
+                              {"student_id" : ObjectId('65bb9bb0e027a40c9aa9e7fc'), "student_name" : "Raji", "date" : "2020-10-15", status: "absent", "eligibleForPlacement" : "yes"}]);
+      {
+        acknowledged: true,
+        insertedIds: {
+          '0': ObjectId('65bb9f44e027a40c9aa9e801'),
+          '1': ObjectId('65bb9f81e027a40c9aa9e802')
+        }
+      }
+    db.tasks.insertMany([{"student_id" : ObjectId('65bb9bb0e027a40c9aa9e7fb'), "task_name" : "Java", "taught_date" : "2020-10-15", "submitted_date" : "2020-10-17"},
+                         {"student_id" : ObjectId('65bb9bb0e027a40c9aa9e7fb'), "task_name" : "Java", "taught_date" : "2020-10-16", "submitted_date" : "2020-10-20"}]);
+    {
+      acknowledged: true,
+      insertedIds: {
+        '0': ObjectId('65bba359e027a40c9aa9e803'),
+        '1': ObjectId('65bba39be027a40c9aa9e804')
+
+      }
+    }
+    db.topics.insertMany([{"task_name" : "Java", "taught_date" : "2020-10-15"}, {"task_name" : "MongoDB", "taught_date" : "2020-10-16"}])
+    {
+      acknowledged: true,
+      insertedIds: {
+        '0': ObjectId('65bbaa04e027a40c9aa9e805'),
+        '1': ObjectId('65bbaa04e027a40c9aa9e806')
+      }
+    }
+    db.company_drives.insertMany([{"company_name" : "ZOHO", "isHiring" : "Yes", "date" : "2020-10-01"}, {"company_name" : "Google", "isHiring" : "No", "date" : "2020-09-31"}, {"company_name" : "Amazon", "isHiring" : "No", "date" : "2020-10-15"}]);
+    {
+      acknowledged: true,
+      insertedIds: {
+        '0': ObjectId('65bbaabee027a40c9aa9e807'),
+        '1': ObjectId('65bbaabee027a40c9aa9e808'),
+        '2': ObjectId('65bbaabee027a40c9aa9e809')
+      }
+    }
+    db.mentors.insertMany([{"mentor_name" : "Agnel" , "mentees" : "1"}, {"mentor_name" : "Vijay", "mentees" : "20"}, {"mentor_name" : "Nazi", "mentees" : 10}]);
+    {
+      acknowledged: true,
+      insertedIds: {
+        '0': ObjectId('65bbab32e027a40c9aa9e80a'),
+        '1': ObjectId('65bbab32e027a40c9aa9e80b'),
+        '2': ObjectId('65bbab32e027a40c9aa9e80c')
+      }
+    }
+1. Find all the topics and tasks which are taught in the month of october;
+
+   db.topics.find({ "taught_date": { "$gte": "2020-10-01", "$lte": "2020-10-31" } })
+    {
+      _id: ObjectId('65bbaa04e027a40c9aa9e805'),
+      task_name: 'Java',
+      taught_date: '2020-10-15'
+    }
+    {
+      _id: ObjectId('65bbaa04e027a40c9aa9e806'),
+      task_name: 'MongoDB',
+      taught_date: '2020-10-16'
+    }
+    db.tasks.find({ "taught_date": { "$gte": "2020-10-01", "$lte": "2020-10-31" } })
+    {
+      _id: ObjectId('65bba359e027a40c9aa9e803'),
+      student_id: ObjectId('65bb9bb0e027a40c9aa9e7fb'),
+      task_name: 'Java',
+      taught_date: '2020-10-15',
+      submitted_date: '2020-10-17'
+    }
+    {
+      _id: ObjectId('65bba359e027a40c9aa9e803'),
+      student_id: ObjectId('65bb9bb0e027a40c9aa9e7fb'),
+      task_name: 'Java',
+      taught_date: '2020-10-15',
+      submitted_date: '2020-10-17'
+    }
+
+2. Find all the company drives which appeared between 15 oct-2020 and 31-oct-2020
+    db.company_drives.find({ "date": { "$gte": "2020-10-15", "$lte": "2020-10-31" } });
+    {
+      _id: ObjectId('65bbaabee027a40c9aa9e809'),
+      company_name: 'Amazon',
+      isHiring: 'No',
+      date: '2020-10-15'
+    }
+3. Find all the company drives and students who are appeared for the placement.
+db.company_drives.aggregate([{$lookup: {from: "attendance",localField: "_id",foreignField: "student_id",as: "attendees"}}]);
+{
+  _id: ObjectId('65bbaabee027a40c9aa9e807'),
+  company_name: 'ZOHO',
+  isHiring: 'Yes',
+  date: '2020-10-01',
+  attendees: []
+}
+{
+  _id: ObjectId('65bbaabee027a40c9aa9e808'),
+  company_name: 'Google',
+  isHiring: 'No',
+  date: '2020-09-31',
+  attendees: []
+}
+{
+  _id: ObjectId('65bbaabee027a40c9aa9e809'),
+  company_name: 'Amazon',
+  isHiring: 'No',
+  date: '2020-10-15',
+  attendees: []
+}
+4. Find the number of problems solved by the user in codekata:
+    db.codekata.find({},{username:true, noOfPblmsSolved:true});
+    {
+      _id: ObjectId('65bb9c92e027a40c9aa9e7ff'),
+      username: 'Ambiga',
+      noOfPblmsSolved: 10
+    }
+    {
+      _id: ObjectId('65bb9caee027a40c9aa9e800'),
+      username: 'Raji',
+      noOfPblmsSolved: 20
+    }
+5. Find all the mentors who have mentee count more than 15:
+    db.mentors.find({"mentees" : {"$gt": "15"}});
+    {
+      _id: ObjectId('65bbab32e027a40c9aa9e80b'),
+      mentor_name: 'Vijay',
+      mentees: '20'
+    }
+6. Find the number of users who are absent and task is not submitted between 15 oct-2020 and 31-oct-2020:
+db.attendance.find({ "date": { "$gte": "2020-10-15", "$lte": "2020-10-31" }, "status": "absent" }).count()
+db.tasks.find({ "date": { "$gte": "2020-10-15", "$lte": "2020-10-31" }, "submitted_date": null }).count()
